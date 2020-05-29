@@ -57,7 +57,7 @@ out vec4 fs_out_color;
 void main(){
     //Lighting
     int bound=min(current_spotlight_num,MAX_SPOTLIGHT_NUM);
-    vec4 spotlight_color_sum=vec4(0.0);
+    vec4 spotlight_color_sum=vec4(0.0,0.0,0.0,1.0);
     for(int i=0;i<bound;i++){
         vec3 r=vs_out_position-lights[i].position;
         float length_r=length(r);
@@ -74,7 +74,7 @@ void main(){
             spotlight_color=vec4(0.0,0.0,0.0,1.0);
         }
         else{
-            if(cos_alpha<cos_half_theta){
+            if(cos_alpha<=cos_half_theta){
                 attenuation*=pow((cos_alpha-cos_half_phi)/(cos_half_theta-cos_half_phi),lights[i].falloff);
             }
 
@@ -86,12 +86,12 @@ void main(){
 
             spotlight_color=diffuse_color+specular_color;
             spotlight_color=clamp(spotlight_color,lights[i].color_clamp_min,lights[i].color_clamp_max);
-            spotlight_color.a=1.0;
         }
 
         spotlight_color_sum+=spotlight_color;
     }
     spotlight_color_sum=clamp(spotlight_color_sum,spotlight_color_sum_clamp_min,spotlight_color_sum_clamp_max);
+    spotlight_color_sum.a=1.0;
     vec4 post_lighting_color=
         lighting.ambient_color*lighting.ambient_power
         +spotlight_color_sum*texture(texture_sampler,vs_out_uv);
