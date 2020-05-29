@@ -14,6 +14,7 @@ import com.github.dabasan.joglf.gl.model.Model3DFunctions;
 import com.github.dabasan.joglf.gl.shader.ShaderProgram;
 import com.github.dabasan.joglf.gl.util.camera.FreeCamera;
 import com.github.dabasan.joglf.gl.window.JOGLFWindow;
+import com.github.dabasan.tool.MathFunctions;
 
 class SpotlightTestWindow2 extends JOGLFWindow {
 	private List<Integer> spotlight_handles;
@@ -70,6 +71,12 @@ class SpotlightTestWindow2 extends JOGLFWindow {
 			SpotlightMgr.SetPosition(spotlight_handle, position);
 			SpotlightMgr.SetDirection(spotlight_handle, direction);
 			SpotlightMgr.SetDiffuseColor(spotlight_handle, GetColorU8(r, g, b, 1.0f));
+
+			float phi = MathFunctions.DegToRad(30.0f);
+			float theta = MathFunctions.DegToRad(10.0f);
+			SpotlightMgr.SetPhi(spotlight_handle, phi);
+			SpotlightMgr.SetTheta(spotlight_handle, theta);
+			SpotlightMgr.SetFalloff(spotlight_handle, 1.0f);
 
 			spotlight_handles.add(spotlight_handle);
 		}
