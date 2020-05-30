@@ -28,36 +28,52 @@ public class SpotlightMgr {
 	private static int count = 0;
 	private static Map<Integer, Spotlight> lights_map = new HashMap<>();
 
-	private static ShaderProgram spotlight_program;
+	private static ShaderProgram gouraud_program;
+	private static ShaderProgram phong_program;
 
 	public static void Initialize() {
-		spotlight_program = new ShaderProgram("dabasan/spotlight",
-				"./Data/Shader/330/addon/dabasan/spotlight/vshader.glsl",
-				"./Data/Shader/330/addon/dabasan/spotlight/fshader.glsl");
-		CameraFront.AddProgram(spotlight_program);
-		LightingFront.AddProgram(spotlight_program);
-		FogFront.AddProgram(spotlight_program);
+		gouraud_program = new ShaderProgram("dabasan/spotlight/gouraud",
+				"./Data/Shader/330/addon/dabasan/spotlight/gouraud/vshader.glsl",
+				"./Data/Shader/330/addon/dabasan/spotlight/gouraud/fshader.glsl");
+		phong_program = new ShaderProgram("dabasan/spotlight/phong",
+				"./Data/Shader/330/addon/dabasan/spotlight/phong/vshader.glsl",
+				"./Data/Shader/330/addon/dabasan/spotlight/phong/fshader.glsl");
+		CameraFront.AddProgram(gouraud_program);
+		LightingFront.AddProgram(gouraud_program);
+		FogFront.AddProgram(gouraud_program);
+		CameraFront.AddProgram(phong_program);
+		LightingFront.AddProgram(phong_program);
+		FogFront.AddProgram(phong_program);
 
 		SetColorSumClamp(0.0f, 1.0f);
 
 		logger.info("SpotlightMgr initialized.");
 	}
 
-	public static int CreateSpotlight() {
+	public static int CreateSpotlight(ShadingMethod method) {
 		if (lights_map.size() > MAX_SPOTLIGHT_NUM) {
 			logger.warn("No more spotlights can be created.");
 			return -1;
 		}
 
 		int light_handle = count;
+
 		Spotlight light = new Spotlight();
-		light.AddProgram(spotlight_program);
+		if (method == ShadingMethod.GOURAUD) {
+			light.AddProgram(gouraud_program);
+		} else {
+			light.AddProgram(phong_program);
+		}
+
 		lights_map.put(light_handle, light);
 		count++;
 
-		spotlight_program.Enable();
-		spotlight_program.SetUniform("current_spotlight_num", lights_map.size());
-		spotlight_program.Disable();
+		gouraud_program.Enable();
+		gouraud_program.SetUniform("current_spotlight_num", lights_map.size());
+		gouraud_program.Disable();
+		phong_program.Enable();
+		phong_program.SetUniform("current_spotlight_num", lights_map.size());
+		phong_program.Disable();
 
 		return light_handle;
 	}
@@ -69,9 +85,12 @@ public class SpotlightMgr {
 
 		lights_map.remove(spotlight_handle);
 
-		spotlight_program.Enable();
-		spotlight_program.SetUniform("current_spotlight_num", lights_map.size());
-		spotlight_program.Disable();
+		gouraud_program.Enable();
+		gouraud_program.SetUniform("current_spotlight_num", lights_map.size());
+		gouraud_program.Disable();
+		phong_program.Enable();
+		phong_program.SetUniform("current_spotlight_num", lights_map.size());
+		phong_program.Disable();
 
 		return 0;
 	}
@@ -79,9 +98,12 @@ public class SpotlightMgr {
 		lights_map.clear();
 		count = 0;
 
-		spotlight_program.Enable();
-		spotlight_program.SetUniform("current_spotlight_num", 0);
-		spotlight_program.Disable();
+		gouraud_program.Enable();
+		gouraud_program.SetUniform("current_spotlight_num", 0);
+		gouraud_program.Disable();
+		phong_program.Enable();
+		phong_program.SetUniform("current_spotlight_num", 0);
+		phong_program.Disable();
 	}
 
 	public static int AddProgram(int spotlight_handle, ShaderProgram program) {
@@ -243,10 +265,14 @@ public class SpotlightMgr {
 	}
 
 	public static void SetColorSumClamp(float min, float max) {
-		spotlight_program.Enable();
-		spotlight_program.SetUniform("spotlight_color_sum_clamp_min", min);
-		spotlight_program.SetUniform("spotlight_color_sum_clamp_max", max);
-		spotlight_program.Disable();
+		gouraud_program.Enable();
+		gouraud_program.SetUniform("spotlight_color_sum_clamp_min", min);
+		gouraud_program.SetUniform("spotlight_color_sum_clamp_max", max);
+		gouraud_program.Disable();
+		phong_program.Enable();
+		phong_program.SetUniform("spotlight_color_sum_clamp_min", min);
+		phong_program.SetUniform("spotlight_color_sum_clamp_max", max);
+		phong_program.Disable();
 	}
 
 	public static void Update() {

@@ -29,9 +29,9 @@ class SpotlightTestWindow2 extends JOGLFWindow {
 		SpotlightMgr.Initialize();
 		spotlight_handles = new ArrayList<>();
 
-		plane_handle = Model3DFunctions.LoadModel("./Data/Model/OBJ/Plane/plane.obj");
+		plane_handle = Model3DFunctions.LoadModel("./Data/Model/OBJ/Plane/subdivided_plane.obj");
 		Model3DFunctions.RemoveAllPrograms(plane_handle);
-		Model3DFunctions.AddProgram(plane_handle, new ShaderProgram("dabasan/spotlight"));
+		Model3DFunctions.AddProgram(plane_handle, new ShaderProgram("dabasan/spotlight/gouraud"));
 
 		camera = new FreeCamera();
 
@@ -60,7 +60,7 @@ class SpotlightTestWindow2 extends JOGLFWindow {
 		camera.Update();
 
 		if (this.GetKeyboardPressingCount(KeyboardEnum.KEY_ENTER) == 1) {
-			int spotlight_handle = SpotlightMgr.CreateSpotlight();
+			int spotlight_handle = SpotlightMgr.CreateSpotlight(ShadingMethod.GOURAUD);
 
 			Vector position = camera.GetPosition();
 			Vector direction = VectorFunctions.VGetFromAngles(camera.GetVRotate(),

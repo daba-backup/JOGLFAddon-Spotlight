@@ -27,7 +27,7 @@ class SpotlightTestWindow extends JOGLFWindow {
 
 		Random random = new Random();
 		for (int i = 0; i < 1; i++) {
-			int spotlight_handle = SpotlightMgr.CreateSpotlight();
+			int spotlight_handle = SpotlightMgr.CreateSpotlight(ShadingMethod.PHONG);
 
 			Vector position = VGet(50.0f, 50.0f, 50.0f);
 			float deg = random.nextFloat() * 360.0f;
@@ -35,8 +35,7 @@ class SpotlightTestWindow extends JOGLFWindow {
 			Matrix rot_y = MGetRotY(rad);
 			position = VTransform(position, rot_y);
 
-			SpotlightMgr.SetPositionAndTarget(spotlight_handle, position,
-					VGet(0.0f, 0.0f, 0.0f));
+			SpotlightMgr.SetPositionAndTarget(spotlight_handle, position, VGet(0.0f, 0.0f, 0.0f));
 
 			float r = random.nextFloat();
 			float g = random.nextFloat();
@@ -50,7 +49,7 @@ class SpotlightTestWindow extends JOGLFWindow {
 
 		plane_handle = Model3DFunctions.LoadModel("./Data/Model/OBJ/Plane/plane.obj");
 		Model3DFunctions.RemoveAllPrograms(plane_handle);
-		Model3DFunctions.AddProgram(plane_handle, new ShaderProgram("dabasan/spotlight"));
+		Model3DFunctions.AddProgram(plane_handle, new ShaderProgram("dabasan/spotlight/phong"));
 	}
 
 	@Override
