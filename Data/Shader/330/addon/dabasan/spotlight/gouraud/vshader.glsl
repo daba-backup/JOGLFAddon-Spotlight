@@ -8,20 +8,6 @@ struct Camera{
     float near;
     float far;
 };
-struct Fog{
-    float start;
-    float end;
-    vec4 color;
-};
-struct Lighting{
-    vec3 direction;
-    vec4 ambient_color;
-    vec4 diffuse_color;
-    vec4 specular_color;
-    float ambient_power;
-    float diffuse_power;
-    float specular_power;
-};
 struct Spotlight{
     bool enabled;
 
@@ -43,9 +29,6 @@ struct Spotlight{
 const int MAX_SPOTLIGHT_NUM=256;
 
 uniform Camera camera;
-uniform Fog fog;
-uniform Lighting lighting;
-
 uniform Spotlight lights[MAX_SPOTLIGHT_NUM];
 uniform int current_spotlight_num;
 uniform float spotlight_color_sum_clamp_min;
@@ -56,7 +39,6 @@ layout(location=1) in vec2 vs_in_uv;
 layout(location=2) in vec3 vs_in_normal;
 out vec2 vs_out_uv;
 out vec4 vs_out_color;
-out float vs_out_fog_factor;
 
 void main(){
     mat4 camera_matrix=camera.projection*camera.view_transformation;
@@ -64,7 +46,6 @@ void main(){
 
     vs_out_uv=vs_in_uv;
 
-    //Lighting
     int bound=min(current_spotlight_num,MAX_SPOTLIGHT_NUM);
     vec4 spotlight_color_sum=vec4(0.0,0.0,0.0,1.0);
     for(int i=0;i<bound;i++){
@@ -104,10 +85,6 @@ void main(){
         spotlight_color_sum+=spotlight_color;
     }
     spotlight_color_sum=clamp(spotlight_color_sum,spotlight_color_sum_clamp_min,spotlight_color_sum_clamp_max);
-    vs_out_color=lighting.ambient_color*lighting.ambient_power+spotlight_color_sum;
+    vs_out_color=spotlight_color_sum;
     vs_out_color.a=1.0;
-
-    //Fog
-    float linear_pos=length(camera.position-vs_in_position);
-    vs_out_fog_factor=clamp((fog.end-linear_pos)/(fog.end-fog.start),0.0,1.0);
 }

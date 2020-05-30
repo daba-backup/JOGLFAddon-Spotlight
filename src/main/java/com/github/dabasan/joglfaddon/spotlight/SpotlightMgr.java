@@ -11,8 +11,6 @@ import org.slf4j.LoggerFactory;
 import com.github.dabasan.basis.coloru8.ColorU8;
 import com.github.dabasan.basis.vector.Vector;
 import com.github.dabasan.joglf.gl.front.CameraFront;
-import com.github.dabasan.joglf.gl.front.FogFront;
-import com.github.dabasan.joglf.gl.front.LightingFront;
 import com.github.dabasan.joglf.gl.shader.ShaderProgram;
 
 /**
@@ -39,11 +37,7 @@ public class SpotlightMgr {
 				"./Data/Shader/330/addon/dabasan/spotlight/phong/vshader.glsl",
 				"./Data/Shader/330/addon/dabasan/spotlight/phong/fshader.glsl");
 		CameraFront.AddProgram(gouraud_program);
-		LightingFront.AddProgram(gouraud_program);
-		FogFront.AddProgram(gouraud_program);
 		CameraFront.AddProgram(phong_program);
-		LightingFront.AddProgram(phong_program);
-		FogFront.AddProgram(phong_program);
 
 		SetColorSumClamp(0.0f, 1.0f);
 
