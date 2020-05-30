@@ -23,6 +23,8 @@ struct Lighting{
     float specular_power;
 };
 struct Spotlight{
+    bool enabled;
+
     vec3 position;
     vec3 direction;
     float attenuation;
@@ -33,6 +35,7 @@ struct Spotlight{
     vec4 specular_color;
     float diffuse_power;
     float specular_power;
+
     float color_clamp_min;
     float color_clamp_max;
 };
@@ -59,6 +62,10 @@ void main(){
     int bound=min(current_spotlight_num,MAX_SPOTLIGHT_NUM);
     vec4 spotlight_color_sum=vec4(0.0,0.0,0.0,1.0);
     for(int i=0;i<bound;i++){
+        if(lights[i].enabled==false){
+            continue;
+        }
+
         vec3 r=vs_out_position-lights[i].position;
         float length_r=length(r);
         float attenuation=1.0/(lights[i].attenuation*length_r);

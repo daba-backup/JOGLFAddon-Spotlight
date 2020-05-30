@@ -5,6 +5,7 @@ import static com.github.dabasan.basis.vector.VectorFunctions.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import com.github.dabasan.basis.coloru8.ColorU8;
 import com.github.dabasan.basis.vector.Vector;
@@ -18,6 +19,8 @@ import com.github.dabasan.tool.MathFunctions;
  *
  */
 class Spotlight {
+	private boolean enabled;
+
 	private Vector position;
 	private Vector direction;
 	private float attenuation;
@@ -28,12 +31,15 @@ class Spotlight {
 	private ColorU8 specular_color;
 	private float diffuse_power;
 	private float specular_power;
+
 	private float color_clamp_min;
 	private float color_clamp_max;
 
 	private List<ShaderProgram> programs;
 
 	public Spotlight() {
+		enabled = true;
+
 		position = VGet(50.0f, 50.0f, 50.0f);
 		direction = VNorm(VGet(-1.0f, -1.0f, -1.0f));
 		attenuation = 0.02f;
@@ -44,12 +50,16 @@ class Spotlight {
 		specular_color = GetColorU8(1.0f, 1.0f, 1.0f, 1.0f);
 		diffuse_power = 2.0f;
 		specular_power = 0.1f;
+
 		color_clamp_min = 0.0f;
 		color_clamp_max = 1.0f;
 
 		programs = new ArrayList<>();
 	}
 
+	public boolean IsEnabled() {
+		return enabled;
+	}
 	public Vector GetPosition() {
 		return new Vector(position);
 	}
@@ -87,6 +97,9 @@ class Spotlight {
 		return color_clamp_max;
 	}
 
+	public void Enable(boolean enabled) {
+		this.enabled = enabled;
+	}
 	public void SetPosition(Vector position) {
 		this.position = position;
 	}
@@ -132,8 +145,16 @@ class Spotlight {
 	public void Update(int index) {
 		String element_name = "lights" + "[" + index + "]";
 
+		Function<Boolean, Integer> bti = b -> {
+			if (b == false)
+				return 0;
+			else
+				return 1;
+		};
+
 		for (var program : programs) {
 			program.Enable();
+			program.SetUniform(element_name + ".enabled", bti.apply(enabled));
 			program.SetUniform(element_name + ".position", position);
 			program.SetUniform(element_name + ".direction", direction);
 			program.SetUniform(element_name + ".attenuation", attenuation);
