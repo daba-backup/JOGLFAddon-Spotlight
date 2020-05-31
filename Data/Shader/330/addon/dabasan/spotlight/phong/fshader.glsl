@@ -13,7 +13,9 @@ struct Spotlight{
 
     vec3 position;
     vec3 direction;
-    float attenuation;
+    float k0;
+    float k1;
+    float k2;
     float phi;
     float theta;
     float falloff;
@@ -50,7 +52,7 @@ void main(){
 
         vec3 r=vs_out_position-lights[i].position;
         float length_r=length(r);
-        float attenuation=1.0/(lights[i].attenuation*length_r);
+        float attenuation=1.0/(lights[i].k0+lights[i].k1*pow(length_r,1.0)+lights[i].k2*pow(length_r,2.0));
 
         vec3 normalized_r=normalize(r);
 

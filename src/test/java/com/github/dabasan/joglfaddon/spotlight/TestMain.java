@@ -5,7 +5,7 @@ public class TestMain {
 		new TestMain();
 	}
 	public TestMain() {
-		var window = new SpotlightTestWindow2();
+		var window = new SpotlightTestWindow();
 		window.SetTitle("Spotlight");
 	}
 }

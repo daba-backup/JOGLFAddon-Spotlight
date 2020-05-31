@@ -23,7 +23,9 @@ class Spotlight {
 
 	private Vector position;
 	private Vector direction;
-	private float attenuation;
+	private float k0;
+	private float k1;
+	private float k2;
 	private float phi;
 	private float theta;
 	private float falloff;
@@ -42,7 +44,9 @@ class Spotlight {
 
 		position = VGet(50.0f, 50.0f, 50.0f);
 		direction = VNorm(VGet(-1.0f, -1.0f, -1.0f));
-		attenuation = 0.02f;
+		k0 = 0.0f;
+		k1 = 0.02f;
+		k2 = 0.0f;
 		phi = MathFunctions.DegToRad(50.0f);
 		theta = MathFunctions.DegToRad(30.0f);
 		falloff = 1.0f;
@@ -66,8 +70,14 @@ class Spotlight {
 	public Vector GetDirection() {
 		return new Vector(direction);
 	}
-	public float GetAttenuation() {
-		return attenuation;
+	public float GetK0() {
+		return k0;
+	}
+	public float GetK1() {
+		return k1;
+	}
+	public float GetK2() {
+		return k2;
 	}
 	public float GetPhi() {
 		return phi;
@@ -106,8 +116,10 @@ class Spotlight {
 	public void SetDirection(Vector direction) {
 		this.direction = direction;
 	}
-	public void SetAttenuation(float attenuation) {
-		this.attenuation = attenuation;
+	public void SetK(float k0, float k1, float k2) {
+		this.k0 = k0;
+		this.k1 = k1;
+		this.k2 = k2;
 	}
 	public void SetPhi(float phi) {
 		this.phi = phi;
@@ -157,7 +169,9 @@ class Spotlight {
 			program.SetUniform(element_name + ".enabled", bti.apply(enabled));
 			program.SetUniform(element_name + ".position", position);
 			program.SetUniform(element_name + ".direction", direction);
-			program.SetUniform(element_name + ".attenuation", attenuation);
+			program.SetUniform(element_name + ".k0", k0);
+			program.SetUniform(element_name + ".k1", k1);
+			program.SetUniform(element_name + ".k2", k2);
 			program.SetUniform(element_name + ".phi", phi);
 			program.SetUniform(element_name + ".theta", theta);
 			program.SetUniform(element_name + ".falloff", falloff);

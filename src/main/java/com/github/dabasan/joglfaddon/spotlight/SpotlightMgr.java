@@ -158,14 +158,14 @@ public class SpotlightMgr {
 
 		return 0;
 	}
-	public static int SetAttenuation(int spotlight_handle, float attenuation) {
+	public static int SetK(int spotlight_handle, float k0, float k1, float k2) {
 		if (lights_map.containsKey(spotlight_handle) == false) {
 			logger.trace("No such spotlight. spotlight_handle={}", spotlight_handle);
 			return -1;
 		}
 
 		Spotlight light = lights_map.get(spotlight_handle);
-		light.SetAttenuation(attenuation);
+		light.SetK(k0, k1, k2);
 
 		return 0;
 	}

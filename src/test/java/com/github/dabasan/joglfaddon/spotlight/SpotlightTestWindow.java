@@ -10,7 +10,6 @@ import java.util.Random;
 
 import com.github.dabasan.basis.matrix.Matrix;
 import com.github.dabasan.basis.vector.Vector;
-import com.github.dabasan.joglf.gl.front.LightingFront;
 import com.github.dabasan.joglf.gl.model.Model3DFunctions;
 import com.github.dabasan.joglf.gl.shader.ShaderProgram;
 import com.github.dabasan.joglf.gl.window.JOGLFWindow;
@@ -44,8 +43,6 @@ class SpotlightTestWindow extends JOGLFWindow {
 
 			spotlight_handles.add(spotlight_handle);
 		}
-
-		LightingFront.SetAmbientColor(GetColorU8(0.0f, 0.0f, 0.0f, 0.0f));
 
 		plane_handle = Model3DFunctions.LoadModel("./Data/Model/OBJ/Plane/plane.obj");
 		Model3DFunctions.RemoveAllPrograms(plane_handle);
