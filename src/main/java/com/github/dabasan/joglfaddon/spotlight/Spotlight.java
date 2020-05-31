@@ -45,14 +45,14 @@ class Spotlight {
 		position = VGet(50.0f, 50.0f, 50.0f);
 		direction = VNorm(VGet(-1.0f, -1.0f, -1.0f));
 		k0 = 0.0f;
-		k1 = 0.02f;
+		k1 = 0.01f;
 		k2 = 0.0f;
 		phi = MathFunctions.DegToRad(50.0f);
 		theta = MathFunctions.DegToRad(30.0f);
 		falloff = 1.0f;
 		diffuse_color = GetColorU8(1.0f, 1.0f, 1.0f, 1.0f);
 		specular_color = GetColorU8(1.0f, 1.0f, 1.0f, 1.0f);
-		diffuse_power = 2.0f;
+		diffuse_power = 1.0f;
 		specular_power = 0.1f;
 
 		color_clamp_min = 0.0f;
