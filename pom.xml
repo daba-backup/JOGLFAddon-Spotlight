@@ -121,7 +121,7 @@
 		<dependency>
 			<groupId>com.github.dabasan</groupId>
 			<artifactId>joglframework-gl</artifactId>
-			<version>11.6.0</version>
+			<version>11.7.0</version>
 		</dependency>
 	</dependencies>
 </project>
