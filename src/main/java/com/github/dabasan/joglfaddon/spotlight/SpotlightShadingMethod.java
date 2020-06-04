@@ -1,11 +1,11 @@
 package com.github.dabasan.joglfaddon.spotlight;
 
 /**
- * Shading methods for spotlighting
+ * Shading method
  * 
  * @author Daba
  *
  */
-public enum ShadingMethod {
+public enum SpotlightShadingMethod {
 	GOURAUD, PHONG
 }

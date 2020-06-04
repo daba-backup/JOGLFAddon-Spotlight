@@ -26,7 +26,7 @@ class SpotlightTestWindow extends JOGLFWindow {
 
 		Random random = new Random();
 		for (int i = 0; i < 1; i++) {
-			int spotlight_handle = SpotlightMgr.CreateSpotlight(ShadingMethod.PHONG);
+			int spotlight_handle = SpotlightMgr.CreateSpotlight(SpotlightShadingMethod.PHONG);
 
 			Vector position = VGet(50.0f, 50.0f, 50.0f);
 			float deg = random.nextFloat() * 360.0f;

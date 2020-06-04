@@ -60,7 +60,7 @@ class SpotlightTestWindow2 extends JOGLFWindow {
 		camera.Update();
 
 		if (this.GetKeyboardPressingCount(KeyboardEnum.KEY_ENTER) == 1) {
-			int spotlight_handle = SpotlightMgr.CreateSpotlight(ShadingMethod.GOURAUD);
+			int spotlight_handle = SpotlightMgr.CreateSpotlight(SpotlightShadingMethod.GOURAUD);
 
 			Vector position = camera.GetPosition();
 			Vector direction = VectorFunctions.VGetFromAngles(camera.GetVRotate(),

@@ -44,7 +44,7 @@ public class SpotlightMgr {
 		logger.info("SpotlightMgr initialized.");
 	}
 
-	public static int CreateSpotlight(ShadingMethod method) {
+	public static int CreateSpotlight(SpotlightShadingMethod method) {
 		if (lights_map.size() > MAX_SPOTLIGHT_NUM) {
 			logger.warn("No more spotlights can be created.");
 			return -1;
@@ -53,7 +53,7 @@ public class SpotlightMgr {
 		int light_handle = count;
 
 		Spotlight light = new Spotlight();
-		if (method == ShadingMethod.GOURAUD) {
+		if (method == SpotlightShadingMethod.GOURAUD) {
 			light.AddProgram(gouraud_program);
 		} else {
 			light.AddProgram(phong_program);
