@@ -4,8 +4,6 @@ import static com.github.dabasan.basis.coloru8.ColorU8Functions.*;
 import static com.github.dabasan.basis.matrix.MatrixFunctions.*;
 import static com.github.dabasan.basis.vector.VectorFunctions.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import com.github.dabasan.basis.matrix.Matrix;
@@ -16,17 +14,16 @@ import com.github.dabasan.joglf.gl.window.JOGLFWindow;
 import com.github.dabasan.tool.MathFunctions;
 
 class SpotlightTestWindow extends JOGLFWindow {
-	private List<Integer> spotlight_handles;
+	private SpotlightMgr spotlight_mgr;
 	private int plane_handle;
 
 	@Override
 	public void Init() {
-		SpotlightMgr.Initialize();
-		spotlight_handles = new ArrayList<>();
+		spotlight_mgr = new SpotlightMgr();
 
 		Random random = new Random();
 		for (int i = 0; i < 1; i++) {
-			int spotlight_handle = SpotlightMgr.CreateSpotlight(SpotlightShadingMethod.PHONG);
+			int spotlight_handle = spotlight_mgr.CreateSpotlight(SpotlightShadingMethod.PHONG);
 
 			Vector position = VGet(50.0f, 50.0f, 50.0f);
 			float deg = random.nextFloat() * 360.0f;
@@ -34,14 +31,12 @@ class SpotlightTestWindow extends JOGLFWindow {
 			Matrix rot_y = MGetRotY(rad);
 			position = VTransform(position, rot_y);
 
-			SpotlightMgr.SetPositionAndTarget(spotlight_handle, position, VGet(0.0f, 0.0f, 0.0f));
+			spotlight_mgr.SetPositionAndTarget(spotlight_handle, position, VGet(0.0f, 0.0f, 0.0f));
 
 			float r = random.nextFloat();
 			float g = random.nextFloat();
 			float b = random.nextFloat();
-			SpotlightMgr.SetDiffuseColor(spotlight_handle, GetColorU8(r, g, b, 1.0f));
-
-			spotlight_handles.add(spotlight_handle);
+			spotlight_mgr.SetDiffuseColor(spotlight_handle, GetColorU8(r, g, b, 1.0f));
 		}
 
 		plane_handle = Model3DFunctions.LoadModel("./Data/Model/OBJ/Plane/plane.obj");
@@ -50,8 +45,13 @@ class SpotlightTestWindow extends JOGLFWindow {
 	}
 
 	@Override
+	public void Dispose() {
+		spotlight_mgr.Dispose();
+	}
+
+	@Override
 	public void Update() {
-		SpotlightMgr.Update();
+		spotlight_mgr.Update();
 	}
 
 	@Override

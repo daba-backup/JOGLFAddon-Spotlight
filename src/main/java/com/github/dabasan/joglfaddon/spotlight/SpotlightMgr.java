@@ -20,16 +20,16 @@ import com.github.dabasan.joglf.gl.shader.ShaderProgram;
  *
  */
 public class SpotlightMgr {
-	private static Logger logger = LoggerFactory.getLogger(SpotlightMgr.class);
-	public static final int MAX_SPOTLIGHT_NUM = 256;
+	private Logger logger = LoggerFactory.getLogger(SpotlightMgr.class);
+	public final int MAX_SPOTLIGHT_NUM = 256;
 
-	private static int count = 0;
-	private static Map<Integer, Spotlight> lights_map = new HashMap<>();
+	private int count = 0;
+	private Map<Integer, Spotlight> lights_map = new HashMap<>();
 
-	private static ShaderProgram gouraud_program;
-	private static ShaderProgram phong_program;
+	private ShaderProgram gouraud_program;
+	private ShaderProgram phong_program;
 
-	public static void Initialize() {
+	public SpotlightMgr() {
 		gouraud_program = new ShaderProgram("dabasan/spotlight/gouraud",
 				"./Data/Shader/330/addon/dabasan/spotlight/gouraud/vshader.glsl",
 				"./Data/Shader/330/addon/dabasan/spotlight/gouraud/fshader.glsl");
@@ -40,11 +40,14 @@ public class SpotlightMgr {
 		CameraFront.AddProgram(phong_program);
 
 		SetColorSumClamp(0.0f, 1.0f);
-
-		logger.info("SpotlightMgr initialized.");
 	}
 
-	public static int CreateSpotlight(SpotlightShadingMethod method) {
+	public void Dispose() {
+		CameraFront.RemoveProgram(gouraud_program);
+		CameraFront.RemoveProgram(phong_program);
+	}
+
+	public int CreateSpotlight(SpotlightShadingMethod method) {
 		if (lights_map.size() > MAX_SPOTLIGHT_NUM) {
 			logger.warn("No more spotlights can be created.");
 			return -1;
@@ -71,7 +74,7 @@ public class SpotlightMgr {
 
 		return light_handle;
 	}
-	public static int DeleteSpotlight(int spotlight_handle) {
+	public int DeleteSpotlight(int spotlight_handle) {
 		if (lights_map.containsKey(spotlight_handle) == false) {
 			logger.trace("No such spotlight. spotlight_handle={}", spotlight_handle);
 			return -1;
@@ -88,7 +91,7 @@ public class SpotlightMgr {
 
 		return 0;
 	}
-	public static void DeleteAllSpotlights() {
+	public void DeleteAllSpotlights() {
 		lights_map.clear();
 		count = 0;
 
@@ -100,7 +103,7 @@ public class SpotlightMgr {
 		phong_program.Disable();
 	}
 
-	public static int AddProgram(int spotlight_handle, ShaderProgram program) {
+	public int AddProgram(int spotlight_handle, ShaderProgram program) {
 		if (lights_map.containsKey(spotlight_handle) == false) {
 			logger.trace("No such spotlight. spotlight_handle={}", spotlight_handle);
 			return -1;
@@ -111,7 +114,18 @@ public class SpotlightMgr {
 
 		return 0;
 	}
-	public static int RemoveAllPrograms(int spotlight_handle) {
+	public int RemoveProgram(int spotlight_handle, ShaderProgram program) {
+		if (lights_map.containsKey(spotlight_handle) == false) {
+			logger.trace("No such spotlight. spotlight_handle={}", spotlight_handle);
+			return -1;
+		}
+
+		Spotlight light = lights_map.get(spotlight_handle);
+		light.RemoveProgram(program);
+
+		return 0;
+	}
+	public int RemoveAllPrograms(int spotlight_handle) {
 		if (lights_map.containsKey(spotlight_handle) == false) {
 			logger.trace("No such spotlight. spotlight_handle={}", spotlight_handle);
 			return -1;
@@ -123,7 +137,7 @@ public class SpotlightMgr {
 		return 0;
 	}
 
-	public static int SetPosition(int spotlight_handle, Vector position) {
+	public int SetPosition(int spotlight_handle, Vector position) {
 		if (lights_map.containsKey(spotlight_handle) == false) {
 			logger.trace("No such spotlight. spotlight_handle={}", spotlight_handle);
 			return -1;
@@ -134,7 +148,7 @@ public class SpotlightMgr {
 
 		return 0;
 	}
-	public static int SetDirection(int spotlight_handle, Vector direction) {
+	public int SetDirection(int spotlight_handle, Vector direction) {
 		if (lights_map.containsKey(spotlight_handle) == false) {
 			logger.trace("No such spotlight. spotlight_handle={}", spotlight_handle);
 			return -1;
@@ -145,7 +159,7 @@ public class SpotlightMgr {
 
 		return 0;
 	}
-	public static int SetPositionAndTarget(int spotlight_handle, Vector position, Vector target) {
+	public int SetPositionAndTarget(int spotlight_handle, Vector position, Vector target) {
 		if (lights_map.containsKey(spotlight_handle) == false) {
 			logger.trace("No such spotlight. spotlight_handle={}", spotlight_handle);
 			return -1;
@@ -158,7 +172,7 @@ public class SpotlightMgr {
 
 		return 0;
 	}
-	public static int SetK(int spotlight_handle, float k0, float k1, float k2) {
+	public int SetK(int spotlight_handle, float k0, float k1, float k2) {
 		if (lights_map.containsKey(spotlight_handle) == false) {
 			logger.trace("No such spotlight. spotlight_handle={}", spotlight_handle);
 			return -1;
@@ -169,7 +183,7 @@ public class SpotlightMgr {
 
 		return 0;
 	}
-	public static int SetPhi(int spotlight_handle, float phi) {
+	public int SetPhi(int spotlight_handle, float phi) {
 		if (lights_map.containsKey(spotlight_handle) == false) {
 			logger.trace("No such spotlight. spotlight_handle={}", spotlight_handle);
 			return -1;
@@ -180,7 +194,7 @@ public class SpotlightMgr {
 
 		return 0;
 	}
-	public static int SetTheta(int spotlight_handle, float theta) {
+	public int SetTheta(int spotlight_handle, float theta) {
 		if (lights_map.containsKey(spotlight_handle) == false) {
 			logger.trace("No such spotlight. spotlight_handle={}", spotlight_handle);
 			return -1;
@@ -191,7 +205,7 @@ public class SpotlightMgr {
 
 		return 0;
 	}
-	public static int SetFalloff(int spotlight_handle, float falloff) {
+	public int SetFalloff(int spotlight_handle, float falloff) {
 		if (lights_map.containsKey(spotlight_handle) == false) {
 			logger.trace("No such spotlight. spotlight_handle={}", spotlight_handle);
 			return -1;
@@ -202,7 +216,7 @@ public class SpotlightMgr {
 
 		return 0;
 	}
-	public static int SetDiffuseColor(int spotlight_handle, ColorU8 diffuse_color) {
+	public int SetDiffuseColor(int spotlight_handle, ColorU8 diffuse_color) {
 		if (lights_map.containsKey(spotlight_handle) == false) {
 			logger.trace("No such spotlight. spotlight_handle={}", spotlight_handle);
 			return -1;
@@ -213,7 +227,7 @@ public class SpotlightMgr {
 
 		return 0;
 	}
-	public static int SetSpecularColor(int spotlight_handle, ColorU8 specular_color) {
+	public int SetSpecularColor(int spotlight_handle, ColorU8 specular_color) {
 		if (lights_map.containsKey(spotlight_handle) == false) {
 			logger.trace("No such spotlight. spotlight_handle={}", spotlight_handle);
 			return -1;
@@ -224,7 +238,7 @@ public class SpotlightMgr {
 
 		return 0;
 	}
-	public static int SetDiffusePower(int spotlight_handle, float diffuse_power) {
+	public int SetDiffusePower(int spotlight_handle, float diffuse_power) {
 		if (lights_map.containsKey(spotlight_handle) == false) {
 			logger.trace("No such spotlight. spotlight_handle={}", spotlight_handle);
 			return -1;
@@ -235,7 +249,7 @@ public class SpotlightMgr {
 
 		return 0;
 	}
-	public static int SetSpecularPower(int spotlight_handle, float specular_power) {
+	public int SetSpecularPower(int spotlight_handle, float specular_power) {
 		if (lights_map.containsKey(spotlight_handle) == false) {
 			logger.trace("No such spotlight. spotlight_handle={}", spotlight_handle);
 			return -1;
@@ -246,7 +260,7 @@ public class SpotlightMgr {
 
 		return 0;
 	}
-	public static int SetColorClamp(int spotlight_handle, float min, float max) {
+	public int SetColorClamp(int spotlight_handle, float min, float max) {
 		if (lights_map.containsKey(spotlight_handle) == false) {
 			logger.trace("No such spotlight. spotlight_handle={}", spotlight_handle);
 			return -1;
@@ -258,7 +272,7 @@ public class SpotlightMgr {
 		return 0;
 	}
 
-	public static void SetColorSumClamp(float min, float max) {
+	public void SetColorSumClamp(float min, float max) {
 		gouraud_program.Enable();
 		gouraud_program.SetUniform("spotlight_color_sum_clamp_min", min);
 		gouraud_program.SetUniform("spotlight_color_sum_clamp_max", max);
@@ -269,7 +283,7 @@ public class SpotlightMgr {
 		phong_program.Disable();
 	}
 
-	public static void Update() {
+	public void Update() {
 		int index = 0;
 		for (var light : lights_map.values()) {
 			light.Update(index);

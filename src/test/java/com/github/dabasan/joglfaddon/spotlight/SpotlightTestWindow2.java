@@ -2,8 +2,6 @@ package com.github.dabasan.joglfaddon.spotlight;
 
 import static com.github.dabasan.basis.coloru8.ColorU8Functions.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import com.github.dabasan.basis.vector.Vector;
@@ -17,7 +15,7 @@ import com.github.dabasan.joglf.gl.window.JOGLFWindow;
 import com.github.dabasan.tool.MathFunctions;
 
 class SpotlightTestWindow2 extends JOGLFWindow {
-	private List<Integer> spotlight_handles;
+	private SpotlightMgr spotlight_mgr;
 	private int plane_handle;
 
 	private FreeCamera camera;
@@ -26,8 +24,7 @@ class SpotlightTestWindow2 extends JOGLFWindow {
 
 	@Override
 	public void Init() {
-		SpotlightMgr.Initialize();
-		spotlight_handles = new ArrayList<>();
+		spotlight_mgr = new SpotlightMgr();
 
 		plane_handle = Model3DFunctions.LoadModel("./Data/Model/OBJ/Plane/subdivided_plane.obj");
 		Model3DFunctions.RemoveAllPrograms(plane_handle);
@@ -36,6 +33,11 @@ class SpotlightTestWindow2 extends JOGLFWindow {
 		camera = new FreeCamera();
 
 		random = new Random();
+	}
+
+	@Override
+	public void Dispose() {
+		spotlight_mgr.Dispose();
 	}
 
 	@Override
@@ -60,7 +62,7 @@ class SpotlightTestWindow2 extends JOGLFWindow {
 		camera.Update();
 
 		if (this.GetKeyboardPressingCount(KeyboardEnum.KEY_ENTER) == 1) {
-			int spotlight_handle = SpotlightMgr.CreateSpotlight(SpotlightShadingMethod.GOURAUD);
+			int spotlight_handle = spotlight_mgr.CreateSpotlight(SpotlightShadingMethod.GOURAUD);
 
 			Vector position = camera.GetPosition();
 			Vector direction = VectorFunctions.VGetFromAngles(camera.GetVRotate(),
@@ -68,19 +70,17 @@ class SpotlightTestWindow2 extends JOGLFWindow {
 			float r = random.nextFloat();
 			float g = random.nextFloat();
 			float b = random.nextFloat();
-			SpotlightMgr.SetPosition(spotlight_handle, position);
-			SpotlightMgr.SetDirection(spotlight_handle, direction);
-			SpotlightMgr.SetDiffuseColor(spotlight_handle, GetColorU8(r, g, b, 1.0f));
+			spotlight_mgr.SetPosition(spotlight_handle, position);
+			spotlight_mgr.SetDirection(spotlight_handle, direction);
+			spotlight_mgr.SetDiffuseColor(spotlight_handle, GetColorU8(r, g, b, 1.0f));
 
 			float phi = MathFunctions.DegToRad(30.0f);
 			float theta = MathFunctions.DegToRad(10.0f);
-			SpotlightMgr.SetPhi(spotlight_handle, phi);
-			SpotlightMgr.SetTheta(spotlight_handle, theta);
-			SpotlightMgr.SetFalloff(spotlight_handle, 1.0f);
-
-			spotlight_handles.add(spotlight_handle);
+			spotlight_mgr.SetPhi(spotlight_handle, phi);
+			spotlight_mgr.SetTheta(spotlight_handle, theta);
+			spotlight_mgr.SetFalloff(spotlight_handle, 1.0f);
 		}
-		SpotlightMgr.Update();
+		spotlight_mgr.Update();
 	}
 
 	@Override
