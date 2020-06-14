@@ -42,10 +42,10 @@ class SpotlightTestWindow2 extends JOGLFWindow {
 
 	@Override
 	public void Update() {
-		int front = this.GetKeyboardPressingCount(KeyboardEnum.KEY_W);
-		int back = this.GetKeyboardPressingCount(KeyboardEnum.KEY_S);
-		int right = this.GetKeyboardPressingCount(KeyboardEnum.KEY_D);
-		int left = this.GetKeyboardPressingCount(KeyboardEnum.KEY_A);
+		final int front = this.GetKeyboardPressingCount(KeyboardEnum.KEY_W);
+		final int back = this.GetKeyboardPressingCount(KeyboardEnum.KEY_S);
+		final int right = this.GetKeyboardPressingCount(KeyboardEnum.KEY_D);
+		final int left = this.GetKeyboardPressingCount(KeyboardEnum.KEY_A);
 
 		int diff_x;
 		int diff_y;
@@ -62,20 +62,21 @@ class SpotlightTestWindow2 extends JOGLFWindow {
 		camera.Update();
 
 		if (this.GetKeyboardPressingCount(KeyboardEnum.KEY_ENTER) == 1) {
-			int spotlight_handle = spotlight_mgr.CreateSpotlight(SpotlightShadingMethod.GOURAUD);
+			final int spotlight_handle = spotlight_mgr
+					.CreateSpotlight(SpotlightShadingMethod.GOURAUD);
 
-			Vector position = camera.GetPosition();
-			Vector direction = VectorFunctions.VGetFromAngles(camera.GetVRotate(),
+			final Vector position = camera.GetPosition();
+			final Vector direction = VectorFunctions.VGetFromAngles(camera.GetVRotate(),
 					camera.GetHRotate());
-			float r = random.nextFloat();
-			float g = random.nextFloat();
-			float b = random.nextFloat();
+			final float r = random.nextFloat();
+			final float g = random.nextFloat();
+			final float b = random.nextFloat();
 			spotlight_mgr.SetPosition(spotlight_handle, position);
 			spotlight_mgr.SetDirection(spotlight_handle, direction);
 			spotlight_mgr.SetDiffuseColor(spotlight_handle, GetColorU8(r, g, b, 1.0f));
 
-			float phi = MathFunctions.DegToRad(30.0f);
-			float theta = MathFunctions.DegToRad(10.0f);
+			final float phi = MathFunctions.DegToRad(30.0f);
+			final float theta = MathFunctions.DegToRad(10.0f);
 			spotlight_mgr.SetPhi(spotlight_handle, phi);
 			spotlight_mgr.SetTheta(spotlight_handle, theta);
 			spotlight_mgr.SetFalloff(spotlight_handle, 1.0f);

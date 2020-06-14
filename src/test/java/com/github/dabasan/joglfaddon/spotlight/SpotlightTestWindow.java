@@ -21,21 +21,22 @@ class SpotlightTestWindow extends JOGLFWindow {
 	public void Init() {
 		spotlight_mgr = new SpotlightMgr();
 
-		Random random = new Random();
+		final Random random = new Random();
 		for (int i = 0; i < 1; i++) {
-			int spotlight_handle = spotlight_mgr.CreateSpotlight(SpotlightShadingMethod.PHONG);
+			final int spotlight_handle = spotlight_mgr
+					.CreateSpotlight(SpotlightShadingMethod.PHONG);
 
 			Vector position = VGet(50.0f, 50.0f, 50.0f);
-			float deg = random.nextFloat() * 360.0f;
-			float rad = MathFunctions.DegToRad(deg);
-			Matrix rot_y = MGetRotY(rad);
+			final float deg = random.nextFloat() * 360.0f;
+			final float rad = MathFunctions.DegToRad(deg);
+			final Matrix rot_y = MGetRotY(rad);
 			position = VTransform(position, rot_y);
 
 			spotlight_mgr.SetPositionAndTarget(spotlight_handle, position, VGet(0.0f, 0.0f, 0.0f));
 
-			float r = random.nextFloat();
-			float g = random.nextFloat();
-			float b = random.nextFloat();
+			final float r = random.nextFloat();
+			final float g = random.nextFloat();
+			final float b = random.nextFloat();
 			spotlight_mgr.SetDiffuseColor(spotlight_handle, GetColorU8(r, g, b, 1.0f));
 		}
 

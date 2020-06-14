@@ -20,14 +20,14 @@ import com.github.dabasan.joglf.gl.shader.ShaderProgram;
  *
  */
 public class SpotlightMgr {
-	private Logger logger = LoggerFactory.getLogger(SpotlightMgr.class);
+	private final Logger logger = LoggerFactory.getLogger(SpotlightMgr.class);
 	public final int MAX_SPOTLIGHT_NUM = 256;
 
 	private int count = 0;
-	private Map<Integer, Spotlight> lights_map = new HashMap<>();
+	private final Map<Integer, Spotlight> lights_map = new HashMap<>();
 
-	private ShaderProgram gouraud_program;
-	private ShaderProgram phong_program;
+	private final ShaderProgram gouraud_program;
+	private final ShaderProgram phong_program;
 
 	public SpotlightMgr() {
 		gouraud_program = new ShaderProgram("dabasan/spotlight/gouraud",
@@ -53,9 +53,9 @@ public class SpotlightMgr {
 			return -1;
 		}
 
-		int light_handle = count;
+		final int light_handle = count;
 
-		Spotlight light = new Spotlight();
+		final Spotlight light = new Spotlight();
 		if (method == SpotlightShadingMethod.GOURAUD) {
 			light.AddProgram(gouraud_program);
 		} else {
@@ -109,7 +109,7 @@ public class SpotlightMgr {
 			return -1;
 		}
 
-		Spotlight light = lights_map.get(spotlight_handle);
+		final Spotlight light = lights_map.get(spotlight_handle);
 		light.AddProgram(program);
 
 		return 0;
@@ -120,7 +120,7 @@ public class SpotlightMgr {
 			return -1;
 		}
 
-		Spotlight light = lights_map.get(spotlight_handle);
+		final Spotlight light = lights_map.get(spotlight_handle);
 		light.RemoveProgram(program);
 
 		return 0;
@@ -131,7 +131,7 @@ public class SpotlightMgr {
 			return -1;
 		}
 
-		Spotlight light = lights_map.get(spotlight_handle);
+		final Spotlight light = lights_map.get(spotlight_handle);
 		light.RemoveAllPrograms();
 
 		return 0;
@@ -143,7 +143,7 @@ public class SpotlightMgr {
 			return -1;
 		}
 
-		Spotlight light = lights_map.get(spotlight_handle);
+		final Spotlight light = lights_map.get(spotlight_handle);
 		light.SetPosition(position);
 
 		return 0;
@@ -154,7 +154,7 @@ public class SpotlightMgr {
 			return -1;
 		}
 
-		Spotlight light = lights_map.get(spotlight_handle);
+		final Spotlight light = lights_map.get(spotlight_handle);
 		light.SetDirection(direction);
 
 		return 0;
@@ -165,8 +165,8 @@ public class SpotlightMgr {
 			return -1;
 		}
 
-		Spotlight light = lights_map.get(spotlight_handle);
-		Vector direction = VNorm(VSub(target, position));
+		final Spotlight light = lights_map.get(spotlight_handle);
+		final Vector direction = VNorm(VSub(target, position));
 		light.SetPosition(position);
 		light.SetDirection(direction);
 
@@ -178,7 +178,7 @@ public class SpotlightMgr {
 			return -1;
 		}
 
-		Spotlight light = lights_map.get(spotlight_handle);
+		final Spotlight light = lights_map.get(spotlight_handle);
 		light.SetK(k0, k1, k2);
 
 		return 0;
@@ -189,7 +189,7 @@ public class SpotlightMgr {
 			return -1;
 		}
 
-		Spotlight light = lights_map.get(spotlight_handle);
+		final Spotlight light = lights_map.get(spotlight_handle);
 		light.SetPhi(phi);
 
 		return 0;
@@ -200,7 +200,7 @@ public class SpotlightMgr {
 			return -1;
 		}
 
-		Spotlight light = lights_map.get(spotlight_handle);
+		final Spotlight light = lights_map.get(spotlight_handle);
 		light.SetTheta(theta);
 
 		return 0;
@@ -211,7 +211,7 @@ public class SpotlightMgr {
 			return -1;
 		}
 
-		Spotlight light = lights_map.get(spotlight_handle);
+		final Spotlight light = lights_map.get(spotlight_handle);
 		light.SetFalloff(falloff);
 
 		return 0;
@@ -222,7 +222,7 @@ public class SpotlightMgr {
 			return -1;
 		}
 
-		Spotlight light = lights_map.get(spotlight_handle);
+		final Spotlight light = lights_map.get(spotlight_handle);
 		light.SetDiffuseColor(diffuse_color);
 
 		return 0;
@@ -233,7 +233,7 @@ public class SpotlightMgr {
 			return -1;
 		}
 
-		Spotlight light = lights_map.get(spotlight_handle);
+		final Spotlight light = lights_map.get(spotlight_handle);
 		light.SetSpecularColor(specular_color);
 
 		return 0;
@@ -244,7 +244,7 @@ public class SpotlightMgr {
 			return -1;
 		}
 
-		Spotlight light = lights_map.get(spotlight_handle);
+		final Spotlight light = lights_map.get(spotlight_handle);
 		light.SetDiffusePower(diffuse_power);
 
 		return 0;
@@ -255,7 +255,7 @@ public class SpotlightMgr {
 			return -1;
 		}
 
-		Spotlight light = lights_map.get(spotlight_handle);
+		final Spotlight light = lights_map.get(spotlight_handle);
 		light.SetSpecularPower(specular_power);
 
 		return 0;
@@ -266,7 +266,7 @@ public class SpotlightMgr {
 			return -1;
 		}
 
-		Spotlight light = lights_map.get(spotlight_handle);
+		final Spotlight light = lights_map.get(spotlight_handle);
 		light.SetColorClamp(min, max);
 
 		return 0;
@@ -285,7 +285,7 @@ public class SpotlightMgr {
 
 	public void Update() {
 		int index = 0;
-		for (var light : lights_map.values()) {
+		for (final var light : lights_map.values()) {
 			light.Update(index);
 			index++;
 		}

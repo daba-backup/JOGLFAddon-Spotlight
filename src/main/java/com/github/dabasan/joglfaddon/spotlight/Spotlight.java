@@ -37,7 +37,7 @@ class Spotlight {
 	private float color_clamp_min;
 	private float color_clamp_max;
 
-	private List<ShaderProgram> programs;
+	private final List<ShaderProgram> programs;
 
 	public Spotlight() {
 		enabled = true;
@@ -158,16 +158,17 @@ class Spotlight {
 	}
 
 	public void Update(int index) {
-		String element_name = "lights" + "[" + index + "]";
+		final String element_name = "lights" + "[" + index + "]";
 
-		Function<Boolean, Integer> bti = b -> {
-			if (b == false)
+		final Function<Boolean, Integer> bti = b -> {
+			if (b == false) {
 				return 0;
-			else
+			} else {
 				return 1;
+			}
 		};
 
-		for (var program : programs) {
+		for (final var program : programs) {
 			program.Enable();
 			program.SetUniform(element_name + ".enabled", bti.apply(enabled));
 			program.SetUniform(element_name + ".position", position);
